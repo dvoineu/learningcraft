@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { locales, isLocale } from "@/i18n/config";
 
+export const dynamic = 'force-dynamic';
 export const dynamicParams = false;
 
 export function generateStaticParams() {
