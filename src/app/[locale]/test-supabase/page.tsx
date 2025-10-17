@@ -8,6 +8,8 @@ import { supabase } from '@/lib/supabase';
 import { getDictionary } from '@/i18n/get-dictionary';
 import { isLocale, type Locale } from '@/i18n/config';
 
+export const dynamic = 'force-dynamic';
+
 interface SupabaseInfo {
   message?: string;
   url?: string;
