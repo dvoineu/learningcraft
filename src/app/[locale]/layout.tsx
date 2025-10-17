@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
 
-import { locales, isLocale, Locale } from "@/i18n/config";
+import { locales, isLocale } from "@/i18n/config";
 
 export const dynamicParams = false;
 
