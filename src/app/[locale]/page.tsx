@@ -32,21 +32,21 @@ export default async function LocaleHomePage({ params }: LocalePageProps) {
             </div>
           </div>
           <nav className="hidden items-center gap-6 text-sm text-white/70 md:flex">
-            <Link href="#features" className="transition hover:text-white">
+            <a href="#features" className="transition hover:text-white">
               {dictionary.nav.features}
-            </Link>
-            <Link href="#steps" className="transition hover:text-white">
+            </a>
+            <a href="#steps" className="transition hover:text-white">
               {dictionary.nav.steps}
-            </Link>
-            <Link href="#community" className="transition hover:text-white">
+            </a>
+            <a href="#community" className="transition hover:text-white">
               {dictionary.nav.community}
-            </Link>
-            <Link
+            </a>
+            <a
               href="#cta"
               className="rounded-full bg-emerald-500 px-5 py-2 font-medium text-slate-950 transition hover:bg-emerald-400"
             >
               {dictionary.nav.join}
-            </Link>
+            </a>
             <div className="flex items-center gap-2 border-l border-white/15 pl-4">
               {locales.map((code) => (
                 <Link
@@ -80,12 +80,12 @@ export default async function LocaleHomePage({ params }: LocalePageProps) {
             </h1>
             <p className="text-lg text-white/70 sm:text-xl">{dictionary.hero.description}</p>
             <div className="flex flex-col gap-4 sm:flex-row">
-              <Link
+              <a
                 href="#cta"
                 className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-6 py-3 text-base font-medium text-slate-950 transition hover:bg-emerald-400"
               >
                 {dictionary.hero.primaryCta}
-              </Link>
+              </a>
               <Link
                 href={`/${locale}/test-supabase`}
                 className="inline-flex items-center justify-center rounded-full border border-white/20 px-6 py-3 text-base font-medium text-white/80 transition hover:border-white hover:text-white"
