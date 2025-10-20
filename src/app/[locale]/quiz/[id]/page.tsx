@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { QuizProgress } from '@/components/quiz/QuizProgress';
 import { QuestionCard } from '@/components/quiz/QuestionCard';
 import { QuestionGrid } from '@/components/quiz/QuestionGrid';
+import { ConfirmationModal } from '@/components/quiz/ConfirmationModal';
 import { Button } from '@/components/ui/button';
 import type { Quiz, QuizQuestion } from '@/lib/types/quiz';
 
@@ -21,6 +22,8 @@ export default function QuizPage() {
   const [answers, setAnswers] = useState<Record<string, 'A' | 'B' | 'C' | 'D'>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Fetch quiz data
   useEffect(() => {
@@ -77,10 +80,13 @@ export default function QuizPage() {
 
   const handleSelectAnswer = (answer: 'A' | 'B' | 'C' | 'D') => {
     if (!currentQuestion) return;
-    setAnswers((prev) => ({
-      ...prev,
+    const newAnswers = {
+      ...answers,
       [currentQuestion.id]: answer,
-    }));
+    };
+    setAnswers(newAnswers);
+    // Save to sessionStorage for results page
+    sessionStorage.setItem(`quiz_${quizId}_answers`, JSON.stringify(newAnswers));
   };
 
   const handleNext = () => {
@@ -95,7 +101,14 @@ export default function QuizPage() {
     }
   };
 
-  const handleFinish = async () => {
+  const handleFinishClick = () => {
+    setShowConfirmModal(true);
+  };
+
+  const handleConfirmFinish = async () => {
+    setIsSubmitting(true);
+    setShowConfirmModal(false);
+
     // Calculate score
     let score = 0;
     questions.forEach((q) => {
@@ -122,6 +135,7 @@ export default function QuizPage() {
     } catch (err) {
       console.error('Error submitting quiz:', err);
       alert('Ошибка при сохранении результатов');
+      setIsSubmitting(false);
     }
   };
 
@@ -194,10 +208,10 @@ export default function QuizPage() {
 
               {isLastQuestion ? (
                 <Button
-                  onClick={handleFinish}
-                  disabled={!answers[currentQuestion.id]}
+                  onClick={handleFinishClick}
+                  disabled={!answers[currentQuestion.id] || isSubmitting}
                 >
-                  Завершить тест
+                  {isSubmitting ? 'Сохранение...' : 'Завершить тест'}
                 </Button>
               ) : (
                 <Button
@@ -221,6 +235,15 @@ export default function QuizPage() {
           </div>
         </div>
       </main>
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={showConfirmModal}
+        answeredCount={answeredQuestions.size}
+        totalQuestions={questions.length}
+        onConfirm={handleConfirmFinish}
+        onCancel={() => setShowConfirmModal(false)}
+      />
     </div>
   );
 }
