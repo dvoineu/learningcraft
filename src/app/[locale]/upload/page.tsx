@@ -42,32 +42,38 @@ export default function UploadPage({ params }: UploadPageProps) {
     if (!isFormValid) return;
 
     setIsGenerating(true);
+    setFileError(null);
 
     try {
-      // TODO: Implement quiz generation API call
-      // const formData = new FormData();
-      // formData.append('file', file);
-      // formData.append('subject', subject);
-      // formData.append('difficulty', difficulty);
-      // formData.append('questionCount', questionCount.toString());
+      // Prepare form data
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('subject', subject);
+      formData.append('difficulty', difficulty);
+      formData.append('questionCount', questionCount.toString());
       
-      // const response = await fetch(`/${locale}/api/quiz/generate`, {
-      //   method: 'POST',
-      //   body: formData,
-      // });
+      // Call API
+      const response = await fetch('/api/quiz/generate', {
+        method: 'POST',
+        body: formData,
+      });
       
-      // const data = await response.json();
-      // router.push(`/${locale}/quiz/${data.quizId}`);
+      const data = await response.json();
 
-      // For now, simulate generation
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      
-      // Redirect to quiz page (mock)
-      alert('Квиз будет сгенерирован! (API пока не реализован)');
+      if (!response.ok) {
+        throw new Error(data.error || 'Не удалось сгенерировать квиз');
+      }
+
+      // Redirect to quiz page
+      router.push(`/${locale}/quiz/${data.quizId}`);
       
     } catch (error) {
       console.error('Error generating quiz:', error);
-      setFileError('Произошла ошибка при генерации квиза');
+      if (error instanceof Error) {
+        setFileError(error.message);
+      } else {
+        setFileError('Произошла ошибка при генерации квиза');
+      }
     } finally {
       setIsGenerating(false);
     }
@@ -141,10 +147,41 @@ export default function UploadPage({ params }: UploadPageProps) {
             </div>
           </div>
 
+          {/* Loading State */}
+          {isGenerating && (
+            <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-6">
+              <div className="flex items-center gap-4">
+                <svg className="h-8 w-8 animate-spin text-emerald-400" fill="none" viewBox="0 0 24 24">
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  />
+                </svg>
+                <div className="flex-1">
+                  <p className="font-medium text-emerald-400">Генерация квиза...</p>
+                  <p className="mt-1 text-sm text-emerald-400/70">
+                    Это может занять до 90 секунд. Пожалуйста, не закрывайте страницу.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Generate Button */}
           <div className="flex justify-end gap-4">
             <Link href={`/${locale}`}>
-              <Button variant="outline">Отмена</Button>
+              <Button variant="outline" disabled={isGenerating}>
+                Отмена
+              </Button>
             </Link>
             <Button
               onClick={handleGenerate}

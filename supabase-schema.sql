@@ -83,7 +83,7 @@ CREATE POLICY "Users can view all quizzes"
 
 CREATE POLICY "Users can create their own quizzes"
   ON quizzes FOR INSERT
-  WITH CHECK (auth.uid() = user_id);
+  WITH CHECK (auth.uid() = user_id OR user_id IS NULL);
 
 CREATE POLICY "Users can update their own quizzes"
   ON quizzes FOR UPDATE
@@ -104,7 +104,7 @@ CREATE POLICY "Users can create questions for their quizzes"
     EXISTS (
       SELECT 1 FROM quizzes
       WHERE quizzes.id = questions.quiz_id
-      AND quizzes.user_id = auth.uid()
+      AND (quizzes.user_id = auth.uid() OR quizzes.user_id IS NULL)
     )
   );
 

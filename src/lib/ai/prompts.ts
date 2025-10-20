@@ -1,41 +1,62 @@
-import { QuizDifficulty, QuizSubject } from '../constants';
-
 /**
- * AI prompts for quiz generation
+ * AI prompt templates for quiz generation
  */
 
-export function getQuizGenerationPrompt(
+import type { QuizDifficulty, QuizSubject } from '../constants';
+
+const DIFFICULTY_INSTRUCTIONS: Record<QuizDifficulty, string> = {
+  easy: 'Вопросы должны быть простыми, проверять базовое понимание материала. Подходят для начинающих.',
+  medium: 'Вопросы должны быть среднего уровня сложности, требовать понимания основных концепций и их применения.',
+  hard: 'Вопросы должны быть сложными, требовать глубокого понимания материала, анализа и синтеза информации.',
+};
+
+export function generateQuizPrompt(
+  text: string,
   subject: QuizSubject,
   difficulty: QuizDifficulty,
-  numberOfQuestions: number,
-  sourceText?: string
+  questionCount: number
 ): string {
-  const basePrompt = `Generate ${numberOfQuestions} multiple-choice questions about ${subject} at ${difficulty} difficulty level.`;
+  const language = subject === 'Беларуская мова' ? 'беларускай' : 'русском';
   
-  const contextPrompt = sourceText 
-    ? `\n\nUse the following text as the source material:\n\n${sourceText}`
-    : '';
+  return `Ты - эксперт по созданию образовательных тестов для подготовки к ЦТ (Централизованное Тестирование) в Беларуси.
 
-  const formatPrompt = `\n\nReturn the response as a JSON array with the following structure:
-[
-  {
-    "text": "Question text",
-    "options": ["Option 1", "Option 2", "Option 3", "Option 4"],
-    "correctAnswer": 0,
-    "explanation": "Brief explanation of the correct answer"
-  }
-]
+ЗАДАЧА:
+Создай ${questionCount} тестовых вопросов по предмету "${subject}" на основе предоставленного материала.
 
-Requirements:
-- Each question must have exactly 4 options
-- correctAnswer is the index (0-3) of the correct option
-- Questions should be clear and unambiguous
-- Options should be plausible but only one correct
-- Provide a brief explanation for each answer`;
+МАТЕРИАЛ ДЛЯ АНАЛИЗА:
+${text.substring(0, 6000)}
 
-  return basePrompt + contextPrompt + formatPrompt;
+ТРЕБОВАНИЯ:
+1. Язык: Все вопросы и ответы должны быть на ${language} языке
+2. Сложность: ${DIFFICULTY_INSTRUCTIONS[difficulty]}
+3. Формат: Каждый вопрос должен иметь ровно 4 варианта ответа (A, B, C, D)
+4. Правильный ответ: Только ОДИН вариант должен быть правильным
+5. Релевантность: Вопросы должны быть основаны ТОЛЬКО на предоставленном материале
+6. Качество: Вопросы должны быть четкими, однозначными и проверять понимание материала
+
+ФОРМАТ ОТВЕТА (строго JSON):
+{
+  "questions": [
+    {
+      "question_text": "Текст вопроса",
+      "options": [
+        {"letter": "A", "text": "Вариант A", "isCorrect": false},
+        {"letter": "B", "text": "Вариант B", "isCorrect": true},
+        {"letter": "C", "text": "Вариант C", "isCorrect": false},
+        {"letter": "D", "text": "Вариант D", "isCorrect": false}
+      ],
+      "correct_answer": "B",
+      "explanation": "Краткое объяснение (1-2 предложения)"
+    }
+  ]
 }
 
-export function getQuizRefinementPrompt(question: string): string {
-  return `Improve the following quiz question to make it clearer and more educational:\n\n${question}\n\nProvide an improved version with better wording and more educational value.`;
+ВАЖНО:
+- Ответ должен быть ТОЛЬКО валидным JSON, без дополнительного текста
+- Все поля обязательны
+- Ровно ${questionCount} вопросов
+- Каждый вопрос имеет ровно 4 варианта ответа
+- Только один правильный ответ на вопрос
+- Объяснения должны быть краткими (1-2 предложения)
+- Варианты ответов должны быть короткими и четкими`;
 }
