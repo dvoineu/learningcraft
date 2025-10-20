@@ -43,7 +43,7 @@ export default async function LocaleHomePage({ params }: LocalePageProps) {
               {dictionary.nav.community}
             </a>
             <Link
-              href={`/${locale}/test-supabase`}
+              href={`/${locale}/upload`}
               className="transition hover:text-white"
             >
               {dictionary.nav.createQuiz}
@@ -95,7 +95,7 @@ export default async function LocaleHomePage({ params }: LocalePageProps) {
                 {dictionary.hero.primaryCta}
               </a>
               <Link
-                href={`/${locale}/test-supabase`}
+                href={`/${locale}/upload`}
                 className="inline-flex items-center justify-center rounded-full border border-white/20 px-6 py-3 text-base font-medium text-white/80 transition hover:border-white hover:text-white"
               >
                 {dictionary.hero.secondaryCta}
