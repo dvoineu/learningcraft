@@ -1,18 +1,8 @@
 import type { User, Session } from '@supabase/supabase-js';
 
-export interface AuthUser extends User {
-  email?: string;
-  user_metadata?: {
-    full_name?: string;
-    avatar_url?: string;
-    name?: string;
-    picture?: string;
-  };
-}
+export type AuthUser = User;
 
-export interface AuthSession extends Session {
-  user: AuthUser;
-}
+export type AuthSession = Session;
 
 export interface AuthState {
   user: AuthUser | null;
@@ -20,4 +10,4 @@ export interface AuthState {
   loading: boolean;
 }
 
-export type AuthProvider = 'google' | 'github' | 'email';
+export type AuthProvider = 'google' | 'github';

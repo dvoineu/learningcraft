@@ -36,7 +36,7 @@ export async function createServerClient() {
 /**
  * Server-side Supabase client for Route Handlers
  */
-export function createRouteHandlerClient(cookieStore: ReturnType<typeof cookies>) {
+export function createRouteHandlerClient(cookieStore: Awaited<ReturnType<typeof cookies>>) {
   return createSupabaseServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
