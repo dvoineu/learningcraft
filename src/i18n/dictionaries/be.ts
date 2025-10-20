@@ -3,8 +3,18 @@ export const dictionary = {
     features: "Магчымасці",
     steps: "Як гэта працуе",
     community: "Супольнасць",
+    createQuiz: "Стварыць Quiz",
     join: "Далучыцца",
     menu: "Меню",
+    signIn: "Увайсці",
+  },
+  auth: {
+    profile: "Профіль",
+    myQuizzes: "Мае квізы",
+    settings: "Налады",
+    signOut: "Выйсці",
+    signIn: "Увайсці",
+    signUp: "Рэгістрацыя",
   },
   brand: {
     subtitle: "Ствараем і развіваем EdTech-прадукты",

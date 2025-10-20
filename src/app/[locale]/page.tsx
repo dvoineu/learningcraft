@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { getDictionary } from "@/i18n/get-dictionary";
 import { locales, localeLabels, isLocale, type Locale } from "@/i18n/config";
+import { UserMenu } from "@/components/auth/UserMenu";
 
 interface LocalePageProps {
   params: Promise<{ locale: string }>;
@@ -41,12 +42,12 @@ export default async function LocaleHomePage({ params }: LocalePageProps) {
             <a href="#community" className="transition hover:text-white">
               {dictionary.nav.community}
             </a>
-            <a
-              href="#cta"
-              className="rounded-full bg-emerald-500 px-5 py-2 font-medium text-slate-950 transition hover:bg-emerald-400"
+            <Link
+              href={`/${locale}/test-supabase`}
+              className="transition hover:text-white"
             >
-              {dictionary.nav.join}
-            </a>
+              {dictionary.nav.createQuiz}
+            </Link>
             <div className="flex items-center gap-2 border-l border-white/15 pl-4">
               {locales.map((code) => (
                 <Link
@@ -61,10 +62,17 @@ export default async function LocaleHomePage({ params }: LocalePageProps) {
                 </Link>
               ))}
             </div>
+            <UserMenu
+              locale={locale}
+              dictionary={dictionary.auth}
+            />
           </nav>
-          <button className="md:hidden rounded-full border border-white/20 px-4 py-2 text-sm text-white/70">
-            {dictionary.nav.menu}
-          </button>
+          <div className="flex items-center gap-3 md:hidden">
+            <UserMenu
+              locale={locale}
+              dictionary={dictionary.auth}
+            />
+          </div>
         </div>
       </header>
 
