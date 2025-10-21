@@ -83,7 +83,7 @@ export function UserMenu({ locale, dictionary }: UserMenuProps) {
               {dictionary.profile}
             </Link>
             <Link
-              href={`/${locale}/my-quizzes`}
+              href={`/${locale}/dashboard`}
               className="block px-4 py-2 text-sm text-white/80 transition hover:bg-white/5 hover:text-white"
               onClick={() => setIsOpen(false)}
             >

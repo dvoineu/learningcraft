@@ -22,22 +22,7 @@ export async function GET(
       return NextResponse.json({ error: 'Quiz not found' }, { status: 404 });
     }
 
-    // Fetch questions for the quiz
-    const { data: questions, error: questionsError } = await supabase
-      .from('questions')
-      .select('id, question_text, options, correct_answer, explanation, order_index')
-      .eq('quiz_id', id)
-      .order('order_index', { ascending: true });
-
-    if (questionsError) {
-      console.error('Error fetching questions:', questionsError);
-      return NextResponse.json({ error: 'Failed to fetch questions' }, { status: 500 });
-    }
-
-    return NextResponse.json({
-      quiz,
-      questions: questions || [],
-    });
+    return NextResponse.json(quiz);
   } catch (error) {
     console.error('Unexpected error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
