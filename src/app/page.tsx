@@ -1,7 +1,10 @@
-import { redirect } from "next/navigation";
+import { defaultLocale, type Locale } from "@/i18n/config";
+import { getDictionary } from "@/i18n/get-dictionary";
+import { LandingPage } from "@/components/landing/LandingPage";
 
-import { defaultLocale } from "@/i18n/config";
+export default async function IndexPage() {
+  const locale: Locale = defaultLocale;
+  const dictionary = await getDictionary(locale);
 
-export default function IndexPage() {
-  redirect(`/${defaultLocale}`);
+  return <LandingPage locale={locale} dictionary={dictionary.landing} />;
 }
