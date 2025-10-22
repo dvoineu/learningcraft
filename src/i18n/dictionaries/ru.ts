@@ -50,6 +50,21 @@ const landingFinalCta = {
   secondaryHref: "mailto:hello@learningcraft.io",
 };
 
+const landingFooter = {
+  rights: "© 2025 LearningCraft Labs. Все права защищены.",
+  company: "ООО «LearningCraft Labs», УНП 193456789",
+  address: "220030, Беларусь, Минск, пр-т Победителей, 7",
+  legalLinks: [
+    { label: "Политика конфиденциальности", href: "/legal/privacy" },
+    { label: "Пользовательское соглашение", href: "/legal/terms" },
+    { label: "Правила пользования", href: "/legal/rules" },
+  ],
+  contacts: [
+    { label: "support@learningcraft.io", href: "mailto:support@learningcraft.io" },
+    { label: "legal@learningcraft.io", href: "mailto:legal@learningcraft.io" },
+  ],
+};
+
 const landingSubjects = {
   tag: "Предметы",
   title: "Один инструмент для всех направлений ЦТ",
@@ -444,6 +459,7 @@ export const dictionary = {
     pricing: landingPricing,
     faq: landingFaq,
     finalCta: landingFinalCta,
+    footer: landingFooter,
   },
   steps: landingSteps,
   community: landingCommunity,

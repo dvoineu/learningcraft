@@ -1,26 +1,166 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "SF Pro Text";
+  font-style: normal;
+  font-weight: 400;
+  src: local("SF Pro Text Regular"), local("SFProText-Regular");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SF Pro Text";
+  font-style: normal;
+  font-weight: 500;
+  src: local("SF Pro Text Medium"), local("SFProText-Medium");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SF Pro Text";
+  font-style: normal;
+  font-weight: 600;
+  src: local("SF Pro Text Semibold"), local("SFProText-Semibold");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SF Pro Text";
+  font-style: normal;
+  font-weight: 700;
+  src: local("SF Pro Text Bold"), local("SFProText-Bold");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  font-style: normal;
+  font-weight: 400;
+  src: local("SF Pro Display Regular"), local("SFProDisplay-Regular");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  font-style: normal;
+  font-weight: 500;
+  src: local("SF Pro Display Medium"), local("SFProDisplay-Medium");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  font-style: normal;
+  font-weight: 600;
+  src: local("SF Pro Display Semibold"), local("SFProDisplay-Semibold");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  font-style: normal;
+  font-weight: 700;
+  src: local("SF Pro Display Bold"), local("SFProDisplay-Bold");
+  font-display: swap;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --lc-background: #0f172a;
+  --lc-foreground: #f8fafc;
+  --lc-surface: rgba(148, 163, 184, 0.1);
+  --lc-surface-strong: rgba(15, 23, 42, 0.85);
+  --lc-border: rgba(148, 163, 184, 0.2);
+  --lc-muted: rgba(248, 250, 252, 0.7);
+  --lc-muted-strong: rgba(248, 250, 252, 0.85);
+  --lc-subtle: rgba(248, 250, 252, 0.4);
+  --lc-accent: #34d399;
+  --lc-accent-rgb: 52, 211, 153;
+  --lc-accent-soft: rgba(var(--lc-accent-rgb), 0.16);
+  --lc-accent-border: rgba(var(--lc-accent-rgb), 0.4);
+  --lc-accent-foreground: #022c22;
+  --lc-font-sans: "SF Pro Text", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --lc-font-display: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+[data-theme="light"] {
+  --lc-background: #f8fafc;
+  --lc-foreground: #0f172a;
+  --lc-surface: rgba(15, 23, 42, 0.04);
+  --lc-surface-strong: rgba(255, 255, 255, 0.9);
+  --lc-border: rgba(15, 23, 42, 0.12);
+  --lc-muted: rgba(15, 23, 42, 0.6);
+  --lc-muted-strong: rgba(15, 23, 42, 0.75);
+  --lc-subtle: rgba(15, 23, 42, 0.4);
+  --lc-accent: #047857;
+  --lc-accent-rgb: 4, 120, 87;
+  --lc-accent-soft: rgba(var(--lc-accent-rgb), 0.12);
+  --lc-accent-border: rgba(var(--lc-accent-rgb), 0.3);
+  --lc-accent-foreground: #f0fdf4;
+  --lc-font-sans: "SF Pro Text", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --lc-font-display: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--lc-background);
+  color: var(--lc-foreground);
+  font-family: var(--lc-font-sans);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: var(--lc-font-sans);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--lc-font-display);
+  font-weight: 600;
+}
+
+.bg-surface {
+  background: var(--lc-surface);
+}
+
+.bg-surface-strong {
+  background: var(--lc-surface-strong);
+}
+
+.border-subtle {
+  border-color: var(--lc-border);
+}
+
+.text-accent {
+  color: var(--lc-accent);
+}
+
+.bg-accent {
+  background: var(--lc-accent);
+  color: var(--lc-accent-foreground);
+}
+
+.bg-accent-soft {
+  background: var(--lc-accent-soft);
+}
+
+.border-accent {
+  border-color: var(--lc-accent-border);
+}
+
+.hover\:border-accent:hover {
+  border-color: var(--lc-accent-border);
+}
+
+.hover\:text-accent:hover {
+  color: var(--lc-accent);
+}
+
+.hover\:bg-accent-soft:hover {
+  background: var(--lc-accent-soft);
 }
