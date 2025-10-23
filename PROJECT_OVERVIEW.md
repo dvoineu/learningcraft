@@ -172,7 +172,26 @@ web-learningcraft/
 ├── tsconfig.json                        # ✅ TypeScript config
 ├── package.json                         # ✅ Dependencies (pdfjs-dist added)
 ├── package-lock.json                    # ✅
-├── supabase-schema.sql                  # ✅ Database schema with RLS
+├── docs/                                # ✅ Project documentation
+│   ├── architecture/                    # ✅ Architecture documentation
+│   │   └── ARCHITECTURE.md
+│   ├── features/                        # ✅ Feature documentation
+│   │   └── DASHBOARD_FEATURE.md
+│   ├── guides/                          # ✅ Setup and usage guides
+│   │   ├── AUTH_SETUP.md
+│   │   ├── GIT_FLOW.md
+│   │   └── MIGRATION_GUIDE.md
+│   ├── history/                         # ✅ Development history
+│   │   ├── API_FIX_NOTES.md
+│   │   └── FR-7_IMPLEMENTATION_SUMMARY.md
+│   └── plan/                            # ✅ Project plans
+│       └── PLAN-20251023.md
+├── supabase/
+│   ├── sql/
+│   │   ├── migrations/                  # ✅ Database migrations
+│   │   ├── seeds/                       # ✅ Database seeds
+│   │   └── schema.sql                   # ✅ Database schema with RLS
+│   └── config/                          # ✅ Supabase configuration
 ├── README.md                            # ✅ Project documentation
 └── PROJECT_OVERVIEW.md                  # ✅ This file
 
@@ -224,6 +243,13 @@ web-learningcraft/
 - **`src/lib/utils.ts`**: Helper functions (cn, formatDate, etc.)
 - **`src/lib/constants.ts`**: App constants (subjects, difficulties, etc.)
 
+### Documentation
+- **`docs/architecture/`**: System architecture and design decisions
+- **`docs/features/`**: Feature specifications and implementation guides
+- **`docs/guides/`**: Setup, configuration, and usage guides
+- **`docs/history/`**: Development history and change logs
+- **`docs/plan/`**: Project planning and roadmaps
+
 ## 🚀 Setup Instructions
 
 ### 1. Install Dependencies
@@ -248,7 +274,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 
 ### 3. Setup Supabase Database
 1. Go to Supabase Dashboard → SQL Editor
-2. Copy content from `supabase-schema.sql`
+2. Copy content from `supabase/sql/schema.sql`
 3. Run the SQL to create tables and RLS policies
 
 ### 4. Run Development Server

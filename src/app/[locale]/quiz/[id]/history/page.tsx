@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { formatRelativeTime } from '@/lib/utils/date';
+import { formatRelativeTime } from '@/shared/utils';
 
 interface QuizAttempt {
   id: string;

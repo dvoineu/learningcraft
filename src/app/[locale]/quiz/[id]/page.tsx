@@ -3,12 +3,11 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
-import { QuizProgress } from '@/components/quiz/QuizProgress';
-import { QuestionCard } from '@/components/quiz/QuestionCard';
-import { QuestionGrid } from '@/components/quiz/QuestionGrid';
-import { ConfirmationModal } from '@/components/quiz/ConfirmationModal';
-import { Button } from '@/components/ui/button';
-import type { Quiz, QuizQuestion } from '@/lib/types/quiz';
+import { QuizProgress, QuestionCard, QuestionGrid, ConfirmationModal } from '@/modules/quiz';
+import { Button } from '@/shared/ui';
+import type { Quiz, Question } from '@/modules/quiz';
+
+type QuizQuestion = Question;
 
 export default function QuizPage() {
   const router = useRouter();
@@ -112,7 +111,7 @@ export default function QuizPage() {
     // Calculate score
     let score = 0;
     questions.forEach((q) => {
-      if (answers[q.id] === q.correct_answer) {
+      if (Number(answers[q.id]) === q.correctAnswer) {
         score++;
       }
     });

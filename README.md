@@ -62,6 +62,13 @@ src/
 ├── components/       # React components (organized by feature)
 ├── lib/              # Utilities, types, and integrations
 └── i18n/             # Internationalization configs and dictionaries
+
+docs/                 # Project documentation
+├── architecture/     # System architecture and design
+├── features/         # Feature specifications
+├── guides/           # Setup and usage guides
+├── history/          # Development history
+└── plan/             # Project planning
 ```
 
 ## 🌍 Internationalization
@@ -73,6 +80,18 @@ The app supports multiple languages through dynamic routing:
 Add new languages by:
 1. Creating a new dictionary in `src/i18n/dictionaries/`
 2. Adding the locale to `src/i18n/config.ts`
+
+## 📖 Documentation Structure
+
+The project documentation is organized in the `docs/` directory:
+
+- **`docs/architecture/`** - System architecture and design decisions
+- **`docs/features/`** - Feature specifications and implementation guides  
+- **`docs/guides/`** - Setup, configuration, and usage guides
+- **`docs/history/`** - Development history and change logs
+- **`docs/plan/`** - Project planning and roadmaps
+
+See the [Documentation section](#-documentation) below for quick links to all documentation.
 
 ## 🧪 Available Scripts
 
@@ -88,8 +107,16 @@ Add new languages by:
 - **Database**: [Supabase](https://supabase.com)
 - **UI Components**: Custom components with shadcn/ui patterns
 
-## 📚 Learn More
+## 📚 Documentation
 
+### Project Documentation
+- [**Architecture**](./docs/architecture/ARCHITECTURE.md) - System design and architecture decisions
+- [**Features**](./docs/features/) - Feature specifications and implementation guides
+- [**Guides**](./docs/guides/) - Setup, configuration, and usage guides
+- [**History**](./docs/history/) - Development history and change logs
+- [**Plans**](./docs/plan/) - Project planning and roadmaps
+
+### External Resources
 - [Next.js Documentation](https://nextjs.org/docs)
 - [Supabase Documentation](https://supabase.com/docs)
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs)

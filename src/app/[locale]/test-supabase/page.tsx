@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-import { supabase } from '@/lib/supabase';
-import { getDictionary } from '@/i18n/get-dictionary';
-import { isLocale, type Locale } from '@/i18n/config';
+import { createClient } from '@/shared/data-access/browser';
+import { getDictionary } from '@/shared/i18n/get-dictionary';
+import { isLocale, type Locale } from '@/shared/i18n/config';
 
 export const dynamic = 'force-dynamic';
 
@@ -49,10 +49,7 @@ export default function TestSupabase({ params }: TestSupabaseProps) {
       setDictionary(dict);
 
       try {
-        if (!supabase) {
-          throw new Error('Supabase client is not initialized');
-        }
-
+        const supabase = createClient();
         const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
 
         if (sessionError) {

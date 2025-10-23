@@ -1,9 +1,8 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getDictionary } from '@/i18n/get-dictionary';
-import { isLocale, type Locale } from '@/i18n/config';
-import { GoogleSignInButton } from '@/components/auth/GoogleSignInButton';
-import { SignInForm } from '@/components/auth/SignInForm';
+import { getDictionary } from '@/shared/i18n/get-dictionary';
+import { isLocale, type Locale } from '@/shared/i18n/config';
+import { GoogleSignInButton, SignInForm } from '@/modules/auth';
 
 interface SignInPageProps {
   params: Promise<{ locale: string }>;

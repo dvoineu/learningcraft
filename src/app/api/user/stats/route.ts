@@ -1,12 +1,28 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { createRouteHandlerClient } from '@/lib/supabase/server';
-import type { DashboardStats } from '@/lib/types/dashboard';
+import { createServerClient } from '@supabase/ssr';
+import type { DashboardStats } from '@/modules/dashboard';
+import type { Database } from '@/shared/data-access/supabase/types/database';
 
 export async function GET() {
   try {
     const cookieStore = await cookies();
-    const supabase = createRouteHandlerClient(cookieStore);
+    const supabase = createServerClient<Database>(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() {
+            return cookieStore.getAll();
+          },
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value, options }) =>
+              cookieStore.set(name, value, options)
+            );
+          },
+        },
+      }
+    );
 
     // Check authentication
     const {
@@ -77,10 +93,11 @@ export async function GET() {
     }
 
     const stats: DashboardStats = {
-      total_quizzes: totalQuizzes || 0,
-      completed_quizzes: completedQuizzes,
-      average_score: Math.round(averageScore),
-      current_streak: currentStreak,
+      totalQuizzes: totalQuizzes || 0,
+      totalAttempts: completedQuizzes,
+      averageScore: Math.round(averageScore),
+      bestScore: Math.round(averageScore), // Using average as best for now
+      recentActivity: [], // TODO: Implement recent activity
     };
 
     return NextResponse.json(stats);

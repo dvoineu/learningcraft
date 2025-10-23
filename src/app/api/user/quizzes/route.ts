@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { createRouteHandlerClient } from '@/lib/supabase/server';
-import type { QuizzesResponse, DashboardQuiz } from '@/lib/types/dashboard';
+import { createRouteHandlerClient } from '@/shared/data-access/server';
+import type { QuizzesResponse, DashboardQuiz } from '@/modules/dashboard';
 
 export async function GET(request: NextRequest) {
   try {
-    const cookieStore = await cookies();
-    const supabase = createRouteHandlerClient(cookieStore);
+    const supabase = await createRouteHandlerClient();
 
     // Check authentication
     const {
@@ -99,17 +98,13 @@ export async function GET(request: NextRequest) {
           title: quiz.title,
           subject: quiz.subject,
           difficulty: quiz.difficulty,
-          created_at: quiz.created_at,
-          question_count: questionCount || 0,
-          last_attempt: lastAttempt
-            ? {
-                score: lastAttempt.score,
-                total: lastAttempt.total_questions,
-                percentage: lastAttempt.percentage,
-                completed_at: lastAttempt.completed_at,
-              }
-            : null,
-          attempt_count: attemptCount || 0,
+          questionCount: questionCount || 0,
+          createdAt: new Date(quiz.created_at),
+          lastAttempt: lastAttempt
+            ? new Date(lastAttempt.completed_at)
+            : undefined,
+          bestScore: lastAttempt?.percentage,
+          attemptCount: attemptCount || 0,
         };
       })
     );
@@ -120,11 +115,11 @@ export async function GET(request: NextRequest) {
       filteredQuizzes = transformedQuizzes.filter((quiz) => {
         switch (status) {
           case 'completed':
-            return quiz.attempt_count > 0;
+            return quiz.attemptCount > 0;
           case 'not_completed':
-            return quiz.attempt_count === 0;
+            return quiz.attemptCount === 0;
           case 'excellent':
-            return quiz.last_attempt && quiz.last_attempt.percentage >= 80;
+            return quiz.bestScore && quiz.bestScore >= 80;
           default:
             return true;
         }
@@ -134,19 +129,16 @@ export async function GET(request: NextRequest) {
     // Apply additional sorting for score and attempts
     if (sortBy === 'score') {
       filteredQuizzes.sort((a, b) => {
-        const aScore = a.last_attempt?.percentage || 0;
-        const bScore = b.last_attempt?.percentage || 0;
+        const aScore = a.bestScore || 0;
+        const bScore = b.bestScore || 0;
         return bScore - aScore;
       });
     } else if (sortBy === 'attempts') {
-      filteredQuizzes.sort((a, b) => b.attempt_count - a.attempt_count);
+      filteredQuizzes.sort((a, b) => b.attemptCount - a.attemptCount);
     }
 
     const response: QuizzesResponse = {
       quizzes: filteredQuizzes,
-      total: count || 0,
-      page,
-      limit,
       totalPages: Math.ceil((count || 0) / limit),
     };
 

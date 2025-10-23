@@ -2,13 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { QuizStats } from '@/components/dashboard/QuizStats';
-import { QuizFilters } from '@/components/dashboard/QuizFilters';
-import { QuizList } from '@/components/dashboard/QuizList';
-import { DeleteQuizModal } from '@/components/dashboard/DeleteQuizModal';
-import { Pagination } from '@/components/dashboard/Pagination';
-import { EmptyState } from '@/components/dashboard/EmptyState';
-import type { DashboardQuiz, DashboardStats, QuizFilters as Filters } from '@/lib/types/dashboard';
+import { QuizStats, QuizFilters, QuizList, DeleteQuizModal, Pagination, EmptyState } from '@/modules/dashboard';
+import type { DashboardQuiz, DashboardStats, DashboardFilters as Filters } from '@/modules/dashboard';
 
 interface DashboardPageProps {
   params: Promise<{ locale: string }>;
@@ -27,9 +22,8 @@ export default function DashboardPage({ params }: DashboardPageProps) {
   const [isDeleting, setIsDeleting] = useState(false);
   const router = useRouter();
 
+  const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState<Filters>({
-    page: 1,
-    limit: 12,
     sortBy: 'date_desc',
   });
 
@@ -37,7 +31,7 @@ export default function DashboardPage({ params }: DashboardPageProps) {
   useEffect(() => {
     params.then((p) => {
       setLocale(p.locale);
-      import(`@/i18n/dictionaries/${p.locale}.ts`).then((module) => {
+      import(`@/shared/i18n/dictionaries/${p.locale}.ts`).then((module) => {
         setDict(module.dictionary);
       });
     });
@@ -71,8 +65,8 @@ export default function DashboardPage({ params }: DashboardPageProps) {
     setError(null);
 
     const params = new URLSearchParams();
-    params.set('page', filters.page?.toString() || '1');
-    params.set('limit', filters.limit?.toString() || '12');
+    params.set('page', currentPage.toString());
+    params.set('limit', '12');
     if (filters.subject) params.set('subject', filters.subject);
     if (filters.difficulty) params.set('difficulty', filters.difficulty);
     if (filters.status) params.set('status', filters.status);
@@ -104,16 +98,17 @@ export default function DashboardPage({ params }: DashboardPageProps) {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [filters, dict, locale, router]);
+  }, [filters, currentPage, dict, locale, router]);
 
   const handleFilterChange = (newFilters: Filters) => {
     setFilters(newFilters);
+    setCurrentPage(1); // Reset to first page when filters change
     // Scroll to top on filter change
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handlePageChange = (page: number) => {
-    setFilters({ ...filters, page });
+    setCurrentPage(page);
     // Scroll to top on page change
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -144,7 +139,7 @@ export default function DashboardPage({ params }: DashboardPageProps) {
       if (stats) {
         setStats({
           ...stats,
-          total_quizzes: stats.total_quizzes - 1,
+          totalQuizzes: stats.totalQuizzes - 1,
         });
       }
 
@@ -162,10 +157,9 @@ export default function DashboardPage({ params }: DashboardPageProps) {
 
   const handleResetFilters = () => {
     setFilters({
-      page: 1,
-      limit: 12,
       sortBy: 'date_desc',
     });
+    setCurrentPage(1);
   };
 
   if (!dict) {
@@ -193,12 +187,12 @@ export default function DashboardPage({ params }: DashboardPageProps) {
         </div>
 
         {/* Stats */}
-        {stats && stats.total_quizzes > 0 && (
+        {stats && stats.totalQuizzes > 0 && (
           <QuizStats stats={stats} dict={dict.dashboard?.stats || {}} />
         )}
 
         {/* Filters */}
-        {stats && stats.total_quizzes > 0 && (
+        {stats && stats.totalQuizzes > 0 && (
           <QuizFilters
             filters={filters}
             onFilterChange={handleFilterChange}
@@ -214,7 +208,7 @@ export default function DashboardPage({ params }: DashboardPageProps) {
         )}
 
         {/* Quiz List */}
-        {!isLoading && quizzes.length === 0 && !hasActiveFilters && stats?.total_quizzes === 0 && (
+        {!isLoading && quizzes.length === 0 && !hasActiveFilters && stats?.totalQuizzes === 0 && (
           <EmptyState
             type="no-quizzes"
             dict={dict.dashboard?.empty || {}}
@@ -222,7 +216,7 @@ export default function DashboardPage({ params }: DashboardPageProps) {
           />
         )}
 
-        {!isLoading && quizzes.length === 0 && (hasActiveFilters || (stats && stats.total_quizzes > 0)) && (
+        {!isLoading && quizzes.length === 0 && (hasActiveFilters || (stats && stats.totalQuizzes > 0)) && (
           <EmptyState
             type="no-results"
             dict={dict.dashboard?.empty || {}}
@@ -244,7 +238,7 @@ export default function DashboardPage({ params }: DashboardPageProps) {
         {/* Pagination */}
         {!isLoading && quizzes.length > 0 && (
           <Pagination
-            currentPage={filters.page || 1}
+            currentPage={currentPage}
             totalPages={totalPages}
             onPageChange={handlePageChange}
             dict={dict.dashboard?.pagination || {}}

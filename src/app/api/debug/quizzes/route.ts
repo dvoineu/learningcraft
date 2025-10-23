@@ -1,12 +1,11 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { createRouteHandlerClient } from '@/lib/supabase/server';
+import { createRouteHandlerClient } from '@/shared/data-access/server';
 
 // Временный endpoint для отладки - удалите после исправления проблемы
 export async function GET() {
   try {
-    const cookieStore = await cookies();
-    const supabase = createRouteHandlerClient(cookieStore);
+    const supabase = await createRouteHandlerClient();
 
     // Check authentication
     const {

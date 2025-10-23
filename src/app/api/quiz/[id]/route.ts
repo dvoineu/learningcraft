@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { createRouteHandlerClient } from '@/lib/supabase/server';
+import { createRouteHandlerClient } from '@/shared/data-access/server';
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const cookieStore = await cookies();
-    const supabase = createRouteHandlerClient(cookieStore);
+    const supabase = await createRouteHandlerClient();
     const { id } = await params;
 
     // Fetch quiz details
@@ -49,8 +48,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const cookieStore = await cookies();
-    const supabase = createRouteHandlerClient(cookieStore);
+    const supabase = await createRouteHandlerClient();
     const { id } = await params;
 
     // Check authentication

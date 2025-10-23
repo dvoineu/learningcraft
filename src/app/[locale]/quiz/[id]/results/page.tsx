@@ -3,10 +3,11 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useParams, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { ScoreCircle } from '@/components/quiz/ScoreCircle';
-import { QuestionReview } from '@/components/quiz/QuestionReview';
-import { Button } from '@/components/ui/button';
-import type { Quiz, QuizQuestion } from '@/lib/types/quiz';
+import { ScoreCircle, QuestionReview } from '@/modules/quiz';
+import { Button } from '@/shared/ui';
+import type { Quiz, Question } from '@/modules/quiz';
+
+type QuizQuestion = Question;
 
 export default function ResultsPage() {
   const router = useRouter();

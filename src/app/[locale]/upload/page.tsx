@@ -3,12 +3,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { FileDropzone } from '@/components/upload/FileDropzone';
-import { SubjectSelector } from '@/components/upload/SubjectSelector';
-import { DifficultySelector } from '@/components/upload/DifficultySelector';
-import { QuestionSlider } from '@/components/upload/QuestionSlider';
-import { Button } from '@/components/ui/button';
-import { DEFAULT_QUESTIONS, type QuizSubject, type QuizDifficulty, ERROR_MESSAGES } from '@/lib/constants';
+import { FileDropzone, SubjectSelector, DifficultySelector, QuestionSlider } from '@/modules/quiz-generation';
+import { Button } from '@/shared/ui';
+import { DEFAULT_QUESTIONS, type QuizSubject, type QuizDifficulty, ERROR_MESSAGES } from '@/core/config/constants';
 
 interface UploadPageProps {
   params: Promise<{ locale: string }>;

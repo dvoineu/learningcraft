@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { createServerClient as createSupabaseServerClient } from '@supabase/ssr';
 
-import { defaultLocale, locales } from '@/i18n/config';
+import { defaultLocale, locales } from '@/shared/i18n/config';
 
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
